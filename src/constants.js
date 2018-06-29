@@ -1,5 +1,5 @@
 /// 碁盤のサイズです。
-export const BSIZE = 9;
+export const BSIZE = 19;
 
 /// 外枠を持つ拡張碁盤のサイズです。
 export const EBSIZE = BSIZE + 2;
@@ -18,10 +18,8 @@ export const PASS = EBVCNT;
 // TODO - 該当する場所にOption<usize>を使ったほうが関数のシグニチャは読みやすい。
 export const VNULL = EBVCNT + 1;
 
-export const LEELA_ZERO = true;
-
 /// NNへの入力に関する履歴の深さです。
-export const KEEP_PREV_CNT = LEELA_ZERO ? 7 : 2;
+export const KEEP_PREV_CNT = 7;
 
 /// NNへの入力フィーチャーの数です。
-export const FEATURE_CNT = KEEP_PREV_CNT * 2 + (LEELA_ZERO ? 4 : 3);
+export const FEATURE_CNT = KEEP_PREV_CNT * 2 + 4;

@@ -1,5 +1,4 @@
 /* global WebDNN $ */
-import { LEELA_ZERO } from './constants.js';
 import { BSIZE, BVCNT, FEATURE_CNT } from './constants.js';
 import { softmax, printProb } from './utils.js';
 
@@ -37,7 +36,7 @@ export class NeuralNetwork {
             }
         };
         setLoadingBar(0);
-        this.nn = await WebDNN.load(LEELA_ZERO ? './output_leela' : './output', options);
+        this.nn = await WebDNN.load('https://storage.googleapis.com/mimiaka-storage/ELF_OpenGo', options);
     }
 
     async evaluate(...inputs) {

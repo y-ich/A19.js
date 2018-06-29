@@ -1,7 +1,8 @@
-import { argsort, argmax } from './utils.js';
+import { argsort, argmax, printProb } from './utils.js';
 import { BVCNT, PASS, VNULL } from './constants.js';
 import { rv2ev, ev2str } from './coord_convert.js';
 import { Board } from './board.js';
+import { WHITE } from './intersection.js';
 
 const MAX_NODE_CNT = 16384;
 const EXPAND_CNT = 8;
@@ -198,6 +199,7 @@ export class Tree {
 
     async preSearch(b) {
         const [prob] = await this.nn.evaluate(b.feature());
+        printProb(prob);
         this.rootId = this.createNode(b, prob);
         this.rootMoveCnt = b.getMoveCnt();
         TREE_CP = this.rootMoveCnt < 8 ? 0.01 : 1.5;
@@ -206,6 +208,9 @@ export class Tree {
     async evaluateChildNode(b, nodeId, child) {
         let [prob, value] = await this.nn.evaluate(b.feature());
         this.evalCnt += 1;
+        if (b.turn === WHITE) { 
+            value[0] = -value[0]; //ELF OpenGo仕様をLeela Zero/Pyaq仕様に合わせる
+        }
         value = -value[0];
         const nd = this.node[nodeId];
         nd.value[child] = value;
