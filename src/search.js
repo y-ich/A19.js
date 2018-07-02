@@ -199,7 +199,6 @@ export class Tree {
 
     async preSearch(b) {
         const [prob] = await this.nn.evaluate(b.feature());
-        printProb(prob);
         this.rootId = this.createNode(b, prob);
         this.rootMoveCnt = b.getMoveCnt();
         TREE_CP = this.rootMoveCnt < 8 ? 0.01 : 1.5;
@@ -315,7 +314,7 @@ export class Tree {
 
 class Node {
     constructor() {
-        this.move = new Uint8Array(BVCNT + 1);
+        this.move = new Uint16Array(BVCNT + 1);
         this.prob = new Float32Array(BVCNT + 1);
         this.value = new Float32Array(BVCNT + 1);
         this.valueWin = new Float32Array(BVCNT + 1);
