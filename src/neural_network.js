@@ -1,6 +1,4 @@
 /* global WebDNN $ */
-import { BSIZE, BVCNT, FEATURE_CNT } from './constants.js';
-import { softmax, printProb } from './utils.js';
 
 if (!ArrayBuffer.prototype.slice) {
     ArrayBuffer.prototype.slice = function(start, end) {

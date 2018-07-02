@@ -30,8 +30,8 @@ export class Board {
         this.komi = komi;
         this.state = new Uint8Array(EBVCNT);
         this.state.fill(EXTERIOR);
-        this.id = new Uint8Array(EBVCNT);
-        this.next = new Uint8Array(EBVCNT);
+        this.id = new Uint16Array(EBVCNT);
+        this.next = new Uint16Array(EBVCNT);
         this.sg = [];
         for (let i = 0; i < EBVCNT; i++) {
             this.sg.push(new StoneGroup());
@@ -73,7 +73,7 @@ export class Board {
         this.sg.forEach(e => { e.clear(false) });
         this.prevState = [];
         for (let i = 0; i < KEEP_PREV_CNT; i++) {
-            this.prevState.push(new Uint8Array(this.state));
+            this.prevState.push(this.state.slice());
         }
         this.ko = VNULL;
         this.turn = BLACK;
@@ -84,15 +84,15 @@ export class Board {
     }
 
     copyTo(dest) {
-        dest.state = new Uint8Array(this.state);
-        dest.id = new Uint8Array(this.id);
-        dest.next = new Uint8Array(this.next);
+        dest.state = this.state.slice();
+        dest.id = this.id.slice();
+        dest.next = this.next.slice();
         for (let i = 0; i < dest.sg.length; i++) {
             this.sg[i].copyTo(dest.sg[i]);
         }
         dest.prevState = [];
         for (let i = 0; i < KEEP_PREV_CNT; i++) {
-            dest.prevState.push(new Uint8Array(this.prevState[i]));
+            dest.prevState.push(this.prevState[i].slice());
         }
         dest.ko = this.ko;
         dest.turn = this.turn;
@@ -238,7 +238,7 @@ export class Board {
         for (let i = KEEP_PREV_CNT - 2; i >= 0; i--) {
             this.prevState[i + 1] = this.prevState[i];
         }
-        this.prevState[0] = new Uint8Array(this.state);
+        this.prevState[0] = this.state.slice();
         if (v === PASS) {
             this.ko = VNULL;
         } else {
