@@ -235,7 +235,7 @@ class PlayController {
 
 async function main() {
     const board = await new Promise(function(res, rej) {
-        new BoardController(BSIZE, 0, 7, res);
+        new BoardController(BSIZE, 0, 7.5, res);
     });
     // JGOのレンダリングを完了させるためにsetTimeoutでイベントループを進める
     const $startModal = $('#start-modal');
@@ -277,10 +277,8 @@ async function main() {
         }
         if (condition.color === 'W') {
             board.setOwnColor(JGO.WHITE);
-            board.setKomi(5.5);
-        } else {
+        } else if (condition.color === 'B') {
             board.setOwnColor(JGO.BLACK);
-            board.setKomi(6.5);
         }
         const controller = new PlayController(engine, board, condition.timeRule === 'igo-quest');
         const isSelfPlay = condition.color === 'self-play';
