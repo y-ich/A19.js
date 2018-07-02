@@ -85,6 +85,7 @@ class PlayController {
                 if (this.timeLeft[this.board.turn] < 0) {
                     clearInterval(this.timer);
                     this.timer = null;
+                    this.engine.stopPonder();
                     alert(i18n.timeout);
                 }
             }, 100);
@@ -175,6 +176,9 @@ class PlayController {
         if (this.isSelfPlay || this.board.turn !== this.board.ownColor) {
             setTimeout(async () => {
                 const move = await this.engine.genmove();
+                if (!this.timer) {
+                    return; // 時間切れ
+                }
                 switch (move) {
                     case 'resign':
                     this.clearTimer();
