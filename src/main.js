@@ -272,7 +272,7 @@ async function main() {
             await engine.timeSettings(0, condition.time);
             break;
             case 'igo-quest':
-            await engine.timeSettings(FIRST_TIME + 125 * FISHER_SEC, FISHER_SEC); // 19路盤は平均手数を250手と仮定して、125手分のフィッシャー秒を追加
+            await engine.timeSettings(FIRST_TIME, FISHER_SEC);
             break;
         }
         if (condition.color === 'W') {
