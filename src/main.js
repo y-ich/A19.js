@@ -282,7 +282,7 @@ async function main() {
             await engine.timeSettings(0, condition.time);
             break;
             case 'igo-quest':
-            await engine.timeSettings(FIRST_TIME, FISHER_SEC - 1);
+            await engine.timeSettings(FIRST_TIME / 2, FISHER_SEC - 1);
             break;
         }
         if (condition.color === 'W') {
