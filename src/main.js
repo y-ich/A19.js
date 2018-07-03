@@ -61,6 +61,10 @@ class A9Engine extends WorkerRMI {
             this.ponderPromise = null;
         }
     }
+
+    async timeLeft() {
+        return await this.invokeRM('timeLeft');
+    }
 }
 
 class PlayController {
@@ -176,6 +180,8 @@ class PlayController {
         if (this.isSelfPlay || this.board.turn !== this.board.ownColor) {
             setTimeout(async () => {
                 const move = await this.engine.genmove();
+                const timeLeft = await this.engine.timeLeft();
+                console.log(timeLeft);
                 if (!this.timer) {
                     return; // 時間切れ
                 }
@@ -276,7 +282,7 @@ async function main() {
             await engine.timeSettings(0, condition.time);
             break;
             case 'igo-quest':
-            await engine.timeSettings(FIRST_TIME, FISHER_SEC);
+            await engine.timeSettings(FIRST_TIME, FISHER_SEC - 1);
             break;
         }
         if (condition.color === 'W') {
