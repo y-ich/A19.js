@@ -181,7 +181,6 @@ class PlayController {
             setTimeout(async () => {
                 const move = await this.engine.genmove();
                 const timeLeft = await this.engine.timeLeft();
-                console.log(timeLeft);
                 if (!this.timer) {
                     return; // 時間切れ
                 }
@@ -282,7 +281,7 @@ async function main() {
             await engine.timeSettings(0, condition.time);
             break;
             case 'igo-quest':
-            await engine.timeSettings(FIRST_TIME / 2, FISHER_SEC - 1);
+            await engine.timeSettings(FIRST_TIME, FISHER_SEC);
             break;
         }
         if (condition.color === 'W') {
