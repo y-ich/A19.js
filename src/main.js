@@ -85,7 +85,7 @@ class PlayController {
                 this.timeLeft[this.board.turn] -= start - this.start;
                 this.start = start;
                 $('#your-time').text(Math.ceil(this.timeLeft[this.board.ownColor] / 1000));
-                $('#ai-time').text(Math.ceil(this.timeLeft[this.board.ownColor % 2 + 1] / 1000));
+                $('#ai-time').text(Math.ceil(this.timeLeft[JGO.opponentOf(this.board.ownColor)] / 1000));
                 if (this.timeLeft[this.board.turn] < 0) {
                     clearInterval(this.timer);
                     this.timer = null;
@@ -112,7 +112,7 @@ class PlayController {
             }, 100);
         }
         $('#your-time').text(Math.ceil(this.timeLeft[this.board.ownColor] / 1000));
-        $('#ai-time').text(Math.ceil(this.timeLeft[this.board.ownColor % 2 + 1] / 1000));
+        $('#ai-time').text(Math.ceil(this.timeLeft[JGO.opponentOf(this.board.ownColor)] / 1000));
 }
 
     clearTimer() {
@@ -167,10 +167,10 @@ class PlayController {
         }
 
         if (this.igoQuest) {
-            this.timeLeft[this.board.turn % 2 + 1] += FISHER_SEC * 1000;
+            this.timeLeft[JGO.opponentOf(this.board.turn)] += FISHER_SEC * 1000;
         } else if (this.board.turn === this.board.ownColor) {
-            this.timeLeft[this.board.ownColor % 2 + 1] = this.engine.byoyomi * 1000;
-            $('#ai-time').text(Math.ceil(this.timeLeft[this.board.ownColor % 2 + 1] / 1000));
+            this.timeLeft[JGO.opponentOf(this.board.ownColor)] = this.engine.byoyomi * 1000;
+            $('#ai-time').text(Math.ceil(this.timeLeft[JGO.opponentOf(this.board.ownColor)] / 1000));
         }
 
         if (!this.isSelfPlay && typeof coord === 'object') {
@@ -180,7 +180,6 @@ class PlayController {
         if (this.isSelfPlay || this.board.turn !== this.board.ownColor) {
             setTimeout(async () => {
                 const move = await this.engine.genmove();
-                const timeLeft = await this.engine.timeLeft();
                 if (!this.timer) {
                     return; // 時間切れ
                 }
