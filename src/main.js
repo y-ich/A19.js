@@ -84,8 +84,11 @@ class PlayController {
                 const start = Date.now();
                 this.timeLeft[this.board.turn] -= start - this.start;
                 this.start = start;
-                $('#your-time').text(Math.ceil(this.timeLeft[this.board.ownColor] / 1000));
-                $('#ai-time').text(Math.ceil(this.timeLeft[JGO.opponentOf(this.board.ownColor)] / 1000));
+                if (this.board.ownColor === this.board.turn) {
+                    $('#your-time').text(Math.ceil(this.timeLeft[this.board.ownColor] / 1000));
+                } else {
+                    $('#ai-time').text(Math.ceil(this.timeLeft[JGO.opponentOf(this.board.ownColor)] / 1000));
+                }
                 if (this.timeLeft[this.board.turn] < 0) {
                     clearInterval(this.timer);
                     this.timer = null;
@@ -167,7 +170,13 @@ class PlayController {
         }
 
         if (this.igoQuest) {
-            this.timeLeft[JGO.opponentOf(this.board.turn)] += FISHER_SEC * 1000;
+            const played = JGO.opponentOf(this.board.turn);
+            const $playedTimer = $(played === this.board.ownColor ? '#your-time' : '#ai-time');
+            $playedTimer.text(`${Math.ceil(this.timeLeft[played] / 1000)}+${FISHER_SEC}`);
+            this.timeLeft[played] += FISHER_SEC * 1000;
+            setTimeout(() => {
+                $playedTimer.text(Math.ceil(this.timeLeft[played] / 1000));
+            }, 2000);
         } else if (this.board.turn === this.board.ownColor) {
             this.timeLeft[JGO.opponentOf(this.board.ownColor)] = this.engine.byoyomi * 1000;
             $('#ai-time').text(Math.ceil(this.timeLeft[JGO.opponentOf(this.board.ownColor)] / 1000));
